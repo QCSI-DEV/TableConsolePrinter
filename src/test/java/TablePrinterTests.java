@@ -32,6 +32,8 @@ public final class TablePrinterTests {
         realString = table.toString();
         System.out.println(realString);
 
+        table.printTable();
+
         Assert.assertEquals(realString, expectedString);
 
     }
