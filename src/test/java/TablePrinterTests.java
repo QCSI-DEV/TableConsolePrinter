@@ -1,9 +1,10 @@
 import implClasses.TableImpl;
-import org.junit.Assert;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 
 /**
- * Created by Наталия on 06.12.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅпїЅ on 06.12.2015.
  */
 
 public final class TablePrinterTests {
@@ -12,7 +13,7 @@ public final class TablePrinterTests {
     public static String realString;
     public static String expectedString =
             "+--+----------+-----+---------------+\n" +
-            "|№| Name     | Age | Address       |\n" +
+            "|пїЅ| Name     | Age | Address       |\n" +
             "+--+----------+-----+---------------+\n" +
             "|1 | Ann      | 24  | Ukraine       |\n" +
             "|2 | Peter    | 26  | USA           |\n" +
@@ -24,7 +25,7 @@ public final class TablePrinterTests {
     public static String [][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Peter", "26", "USA"},
             {"Vasya", "102", "Georgia"}, {"Alexandr", "7", "Great Britain"}};
     @Test
-    public static void main(String[] args) {
+    public void test(String[] args) {
         TableImpl table = TableImpl.create(headersTest, valuesTest);
 
         System.out.println(table.columnLength().toString());
