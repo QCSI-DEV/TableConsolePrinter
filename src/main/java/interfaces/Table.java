@@ -1,23 +1,26 @@
 package interfaces;
 
-/**
- * Created by Наталия on 06.12.2015.
- */
+
 public class Table {
     private String[] headers;
     private String[][] values;
-    private int colLength [];
+    private int colLength[];
 
-    public boolean isHeadersColMatchValueCol (){
+    public boolean isHeadersColMatchValueCol() {
         return false;
     }
 
     public int[] columnLength() {
-                return null;
+        return null;
     }
 
-    public void printTable(){
+    public void printTable() {
 
+    }
+
+    public void makeStringLength(String []headers) {
+    }
+    public void makeStringLength(String [][]values) {
     }
 
     public String[] getHeaders() {

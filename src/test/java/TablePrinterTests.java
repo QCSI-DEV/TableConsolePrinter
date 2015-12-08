@@ -2,10 +2,8 @@ import implClasses.TableImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 
-/**
- * Created by ������� on 06.12.2015.
- */
 
 public final class TablePrinterTests {
 
@@ -25,10 +23,10 @@ public final class TablePrinterTests {
     public static String [][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Peter", "26", "USA"},
             {"Vasya", "102", "Georgia"}, {"Alexandr", "7", "Great Britain"}};
     @Test
-    public void test(String[] args) {
+    public void test() {
         TableImpl table = TableImpl.create(headersTest, valuesTest);
 
-        System.out.println(table.columnLength().toString());
+        System.out.println(Arrays.toString(table.columnLength()));
 
         realString = table.toString();
         System.out.println(realString);
