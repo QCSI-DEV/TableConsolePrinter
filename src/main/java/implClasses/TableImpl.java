@@ -10,16 +10,27 @@ import static java.util.Objects.requireNonNull;
 public final class TableImpl extends Table {
     private String[] headers;
     private String[][] values;
+    private boolean withRowNumbers;
     String[] divider;
     int[] colLength;
 
-    public static TableImpl create(String[] headers, String[][] values) {
-        return new TableImpl(headers, values);
+
+
+    public static TableImpl create(String[] headers, String[][] values, boolean withRowNumbers) {
+        return new TableImpl(headers, values, withRowNumbers);
+    }
+    public static TableImpl create(String[][] values, boolean withRowNumbers) {
+        return new TableImpl(values, withRowNumbers);
     }
 
-    private TableImpl(String[] headers, String[][] values) {
+    private TableImpl(String[] headers, String[][] values, boolean withRowNumbers) {
         this.headers = requireNonNull(headers);
         this.values = requireNonNull(values);
+        this.withRowNumbers = withRowNumbers;
+    }
+    public TableImpl(String[][] values, boolean withRowNumbers) {
+        this.values = requireNonNull(values);
+        this.withRowNumbers = withRowNumbers;
     }
 
     @Override
@@ -52,7 +63,7 @@ public final class TableImpl extends Table {
     }
 
     @Override
-    public void printTable() {
+    public String printTable() {
         makeStringLength(headers);
         makeStringLength(values);
 
@@ -74,9 +85,9 @@ public final class TableImpl extends Table {
                 sb.append("|").append(value[k]);
             }
             sb.append("|").append("\n");
-            sb.append(dividerString).append("+").append("\n");
         }
-        System.out.println(sb);
+        sb.append(dividerString).append("+");
+        return sb.toString();
     }
 
     @Override
@@ -124,7 +135,6 @@ public final class TableImpl extends Table {
         }
     }
 
-    // TODO: Change divider cycle for formatter.
     private void makeDivider() {
         divider = new String[headers.length];
         for (int i = 0; i < headers.length; i++) {
@@ -177,4 +187,6 @@ public final class TableImpl extends Table {
                 ", colLength=" + Arrays.toString(colLength) +
                 '}';
     }
+
+
 }

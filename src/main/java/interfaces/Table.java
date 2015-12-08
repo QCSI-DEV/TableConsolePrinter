@@ -14,8 +14,9 @@ public class Table {
         return null;
     }
 
-    public void printTable() {
+    public String printTable() {
 
+        return null;
     }
 
     public void makeStringLength(String []headers) {
