@@ -44,9 +44,9 @@ public final class TablePrinterTests {
 
         String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
         boolean withRowNumbersTest = true;
+        boolean withHeaders=false;
 
-
-        TableImpl table = TableImpl.create(valuesTest, withRowNumbersTest);
+        TableImpl table = TableImpl.create(withHeaders, valuesTest, withRowNumbersTest);
         System.out.println("tableWithoutHeadersWithRowNumbers");
         System.out.println(Arrays.toString(table.columnLength()));
 
@@ -59,16 +59,16 @@ public final class TablePrinterTests {
         String realString;
         String expectedString =
 
-                        "+----------+-----+---------------+\n" +
-                        "| Ann      | 24  | Ukraine       |\n" +
-                        "| Alexandr | 7   | Great Britain |\n" +
-                        "+----------+-----+---------------+";
+                        "+----------+----+---------------+\n" +
+                        "| Ann      | 24 | Ukraine       |\n" +
+                        "| Alexandr | 7  | Great Britain |\n" +
+                        "+----------+----+---------------+";
 
         String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
         boolean withRowNumbersTest = false;
+        boolean withHeaders=false;
 
-
-        TableImpl table = TableImpl.create(valuesTest, withRowNumbersTest);
+        TableImpl table = TableImpl.create(withHeaders, valuesTest, withRowNumbersTest);
         System.out.println("tableWithoutHeadersWithoutRowNumbers");
         System.out.println(Arrays.toString(table.columnLength()));
 
