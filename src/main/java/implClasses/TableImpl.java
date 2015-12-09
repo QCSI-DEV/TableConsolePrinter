@@ -73,17 +73,17 @@ public final class TableImpl extends Table {
 
     public void getNumberOfColumns() {
         if (withHeaders)
-        numOfCoumns = headers.length;
+            numOfCoumns = headers.length;
         else
-        for (String[] inner : values) {
-            numOfCoumns =inner.length;
-        }
+            for (String[] inner : values) {
+                numOfCoumns = inner.length;
+            }
 
     }
 
     @Override
     public String printTable() {
-        if (withHeaders)makeStringLength(headers);
+        if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 
         makeDivider();
@@ -94,6 +94,13 @@ public final class TableImpl extends Table {
 
         sb.append(dividerString).append("+").append("\n");
         if (withHeaders) {
+            if (withRowNumbers) {
+                String rowNumdersLength = String.valueOf(values.length);
+                sb.append("| #");
+                for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                    sb.append(" ");
+                }
+            }
             for (String header : headers) {
                 sb.append("|").append(header);
             }
@@ -101,8 +108,16 @@ public final class TableImpl extends Table {
             sb.append(dividerString).append("+").append("\n");
         }
         for (String[] value : values) {
-            for (int k = 0; k < numOfCoumns; k++) {
-                sb.append("|").append(value[k]);
+            if (withRowNumbers) {
+                String rowNumdersLength = String.valueOf(values.length);
+                sb.append("| ");
+                //TODO fix numeration
+                for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                    sb.append(i1).append(" ");
+                }
+            }
+            for (int valcol = 0; valcol < numOfCoumns; valcol++) {
+                sb.append("|").append(value[valcol]);
             }
             sb.append("|").append("\n");
         }
@@ -126,25 +141,27 @@ public final class TableImpl extends Table {
     }
 
     public void makeDividerLength(String[] divider) {
-        for (int i = 0; i < divider.length; i++) {
+        /*StringBuilder sbFirst = new StringBuilder();
+        if (withRowNumbers) {
+            String rowNumdersLength = String.valueOf(values.length);
+            sbFirst.append("+");
+            for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                sbFirst.append("-");
+            }
+        }*/
+        for (int div = 0; div < divider.length; div++) {
             StringBuilder sbLen = new StringBuilder();
-
-            int dif = colLength[i] - divider[i].length();
+            int dif = colLength[div] - divider[div].length();
             if (dif >= 0) {
-                if (withRowNumbers) {
-                    String rowNumdersLength = String.valueOf(values.length);
-                    sbLen.append("+");
-                    for (int i1 = 0; i1 < rowNumdersLength.length(); i++) {
-                        sbLen.append("-");
-                    }
-                }
-                sbLen.append(divider[i]);
+                sbLen.append(divider[div]);
                 for (int d = 0; d < (dif + 3); d++) {
                     sbLen.append("-");
                 }
-            } else sbLen.append(divider[i]).append("-");
-            divider[i] = sbLen.toString();
+            } else sbLen.append(divider[div]).append("-");
+            divider[div] = sbLen.toString();
+
         }
+
     }
 
     public void makeStringLength(String[][] values) {
@@ -172,8 +189,8 @@ public final class TableImpl extends Table {
 
     public String makeStringfromDivider() {
         StringBuilder sbdiv = new StringBuilder();
-        for (int i = 0; i < divider.length; i++) {
-            sbdiv.append(divider[i]);
+        for (int divlen = 0; divlen < divider.length; divlen++) {
+            sbdiv.append(divider[divlen]);
         }
         return sbdiv.toString();
     }
