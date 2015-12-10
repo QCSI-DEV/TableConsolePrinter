@@ -1,7 +1,6 @@
 package implClasses;
 
 import interfaces.Table;
-import org.testng.annotations.Optional;
 
 import java.util.Arrays;
 
@@ -13,7 +12,7 @@ public final class TableImpl extends Table {
     private String[][] values;
     private boolean withRowNumbers;
     private boolean withHeaders = true;
-    String[] divider;
+
     int[] colLength;
     int numOfCoumns;
 
@@ -78,7 +77,6 @@ public final class TableImpl extends Table {
             for (String[] inner : values) {
                 numOfCoumns = inner.length;
             }
-
     }
 
     @Override
@@ -86,9 +84,10 @@ public final class TableImpl extends Table {
         if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 
-        makeDivider();
-        makeDividerLength(divider);
-        String dividerString = makeStringfromDivider();
+        Divider divider = Divider.create(numOfCoumns,colLength, values, withRowNumbers);
+
+        divider.makeDividerLength(divider.makeDivider());
+        String dividerString = divider.makeFullStringfromDivider();
 
         StringBuilder sb = new StringBuilder();
 
@@ -107,13 +106,14 @@ public final class TableImpl extends Table {
             sb.append("|").append("\n");
             sb.append(dividerString).append("+").append("\n");
         }
+        int count = 1;
         for (String[] value : values) {
             if (withRowNumbers) {
                 String rowNumdersLength = String.valueOf(values.length);
                 sb.append("| ");
-                //TODO fix numeration
                 for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
-                    sb.append(i1).append(" ");
+                    sb.append(count).append(" ");
+                    count++;
                 }
             }
             for (int valcol = 0; valcol < numOfCoumns; valcol++) {
@@ -140,29 +140,7 @@ public final class TableImpl extends Table {
         }
     }
 
-    public void makeDividerLength(String[] divider) {
-        /*StringBuilder sbFirst = new StringBuilder();
-        if (withRowNumbers) {
-            String rowNumdersLength = String.valueOf(values.length);
-            sbFirst.append("+");
-            for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
-                sbFirst.append("-");
-            }
-        }*/
-        for (int div = 0; div < divider.length; div++) {
-            StringBuilder sbLen = new StringBuilder();
-            int dif = colLength[div] - divider[div].length();
-            if (dif >= 0) {
-                sbLen.append(divider[div]);
-                for (int d = 0; d < (dif + 3); d++) {
-                    sbLen.append("-");
-                }
-            } else sbLen.append(divider[div]).append("-");
-            divider[div] = sbLen.toString();
 
-        }
-
-    }
 
     public void makeStringLength(String[][] values) {
         for (int rows = 0; rows < values.length; rows++) {
@@ -180,20 +158,7 @@ public final class TableImpl extends Table {
         }
     }
 
-    private void makeDivider() {
-        divider = new String[numOfCoumns];
-        for (int i = 0; i < numOfCoumns; i++) {
-            divider[i] = "+-";
-        }
-    }
 
-    public String makeStringfromDivider() {
-        StringBuilder sbdiv = new StringBuilder();
-        for (int divlen = 0; divlen < divider.length; divlen++) {
-            sbdiv.append(divider[divlen]);
-        }
-        return sbdiv.toString();
-    }
 
     @Override
     public String[] getHeaders() {

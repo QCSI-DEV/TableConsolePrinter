@@ -6,57 +6,59 @@ import java.util.Arrays;
 
 
 public final class TablePrinterTests {
+    public void print(String text) {
+        System.out.println(text);
+    }
+
+    public void testCase(String expectedString, TableImpl table) {
+        String realString;
+
+        print(Arrays.toString(table.columnLength()));
+
+        realString = table.printTable();
+        print(realString);
+        Assert.assertEquals(realString, expectedString);
+    }
 
     @Test
     public void tableWithHeadersAndRowNumbers() {
-        String realString;
         String expectedString =
-                 "+--+----------+-----+---------------+\n" +
-                 "|# | Name     | Age | Address       |\n" +
-                 "+--+----------+-----+---------------+\n" +
-                 "|1 | Ann      | 24  | Ukraine       |\n" +
-                 "|2 | Alexandr | 7   | Great Britain |\n" +
-                 "+--+----------+-----+---------------+";
+                        "+---+----------+-----+---------------+\n" +
+                        "| # | Name     | Age | Address       |\n" +
+                        "+---+----------+-----+---------------+\n" +
+                        "| 1 | Ann      | 24  | Ukraine       |\n" +
+                        "| 2 | Alexandr | 7   | Great Britain |\n" +
+                        "+---+----------+-----+---------------+";
 
         String[] headersTest = {"Name", "Age", "Address"};
         String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
-        boolean withRowNumbersTest = true;
 
+        print("tableWithHeadersAndRowNumbers");
+        TableImpl table = TableImpl.create(headersTest, valuesTest, true);
 
-        TableImpl table = TableImpl.create(headersTest, valuesTest, withRowNumbersTest);
-
-        System.out.println("tableWithHeadersAndRowNumbers");
-        System.out.println(Arrays.toString(table.columnLength()));
-
-        realString = table.printTable();
-        System.out.println(realString);
-        Assert.assertEquals(realString, expectedString);
+        testCase(expectedString, table);
     }
+
     @Test
     public void tableWithoutHeadersWithRowNumbers() {
-        String realString;
         String expectedString =
 
-                        "+--+----------+-----+---------------+\n" +
-                        "|1 | Ann      | 24  | Ukraine       |\n" +
-                        "|2 | Alexandr | 7   | Great Britain |\n" +
-                        "+--+----------+-----+---------------+";
+                        "+---+----------+----+---------------+\n" +
+                        "| 1 | Ann      | 24 | Ukraine       |\n" +
+                        "| 2 | Alexandr | 7  | Great Britain |\n" +
+                        "+---+----------+----+---------------+";
 
         String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
-        boolean withRowNumbersTest = true;
-        boolean withHeaders=false;
 
-        TableImpl table = TableImpl.create(withHeaders, valuesTest, withRowNumbersTest);
-        System.out.println("tableWithoutHeadersWithRowNumbers");
-        System.out.println(Arrays.toString(table.columnLength()));
 
-        realString = table.printTable();
-        System.out.println(realString);
-        Assert.assertEquals(realString, expectedString);
+        print("tableWithoutHeadersWithRowNumbers");
+
+        TableImpl table = TableImpl.create(false, valuesTest, true);
+        testCase(expectedString, table);
     }
+
     @Test
     public void tableWithoutHeadersWithoutRowNumbers() {
-        String realString;
         String expectedString =
 
                         "+----------+----+---------------+\n" +
@@ -65,21 +67,15 @@ public final class TablePrinterTests {
                         "+----------+----+---------------+";
 
         String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
-        boolean withRowNumbersTest = false;
-        boolean withHeaders=false;
 
-        TableImpl table = TableImpl.create(withHeaders, valuesTest, withRowNumbersTest);
-        System.out.println("tableWithoutHeadersWithoutRowNumbers");
-        System.out.println(Arrays.toString(table.columnLength()));
+        print("tableWithoutHeadersWithoutRowNumbers");
+        TableImpl table = TableImpl.create(false, valuesTest, false);
+        testCase(expectedString, table);
 
-        realString = table.printTable();
-        System.out.println(realString);
-        Assert.assertEquals(realString, expectedString);
     }
 
     @Test
-    public void tableWithHeadersWithoutRowNumbers () {
-        String realString;
+    public void tableWithHeadersWithoutRowNumbers() {
         String expectedString =
                         "+----------+-----+---------------+\n" +
                         "| Name     | Age | Address       |\n" +
@@ -90,17 +86,12 @@ public final class TablePrinterTests {
 
 
         String[] headersTest = {"Name", "Age", "Address"};
-        String[][] valuesTest = {{"Ann", "24", "Ukraine"},{"Alexandr", "7", "Great Britain"}};
-        boolean withRowNumbersTest = false;
+        String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
 
-        TableImpl table = TableImpl.create(headersTest, valuesTest, withRowNumbersTest);
-        System.out.println("tableWithHeadersWithoutRowNumbers");
+        print("tableWithHeadersWithoutRowNumbers");
+        TableImpl table = TableImpl.create(headersTest, valuesTest, false);
+        testCase(expectedString, table);
 
-        System.out.println(Arrays.toString(table.columnLength()));
-
-        realString = table.printTable();
-        System.out.println(realString);
-        Assert.assertEquals(realString, expectedString);
     }
 }
 
