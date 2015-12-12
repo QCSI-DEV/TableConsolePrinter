@@ -112,6 +112,7 @@ public final class TableImpl extends Table {
                 String rowNumdersLength = String.valueOf(values.length);
                 sb.append("| ");
                 sb.append(i+1);
+                //TODO remove extra whitespace
                 if (String.valueOf(i).length()<rowNumdersLength.length()) {
                     for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
                         sb.append(" ");
