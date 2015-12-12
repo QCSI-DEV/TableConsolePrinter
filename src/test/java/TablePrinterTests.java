@@ -1,6 +1,7 @@
+import implClasses.DBforTest;
 import implClasses.TableImpl;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
 
@@ -30,8 +31,12 @@ public final class TablePrinterTests {
                         "| 2 | Alexandr | 7   | Great Britain |\n" +
                         "+---+----------+-----+---------------+";
 
-        String[] headersTest = {"Name", "Age", "Address"};
-        String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
+        DBforTest db = new DBforTest(10,100);
+        db.createHeaders();
+        db.createValues();
+
+        String[] headersTest = db.fillHeaders();
+        String[][] valuesTest = db.fillValues();
 
         print("tableWithHeadersAndRowNumbers");
         TableImpl table = TableImpl.create(headersTest, valuesTest, true);
