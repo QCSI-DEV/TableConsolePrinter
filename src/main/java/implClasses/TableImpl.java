@@ -106,14 +106,16 @@ public final class TableImpl extends Table {
             sb.append("|").append("\n");
             sb.append(dividerString).append("+").append("\n");
         }
-        int count = 1;
-        for (String[] value : values) {
+        for (int i = 0; i < values.length; i++) {
+            String[] value = values[i];
             if (withRowNumbers) {
                 String rowNumdersLength = String.valueOf(values.length);
                 sb.append("| ");
-                for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
-                    sb.append(count).append(" ");
-                    count++;
+                sb.append(i+1);
+                if (String.valueOf(i).length()<rowNumdersLength.length()) {
+                    for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                        sb.append(" ");
+                    }
                 }
             }
             for (int valcol = 0; valcol < numOfCoumns; valcol++) {
