@@ -9,11 +9,12 @@ public class Divider {
     int[] colLength;
     private String[][] values;
     private boolean withRowNumbers;
-    String[]divider;
+    String[] divider;
 
-    public static Divider create (int numOfCoumns, int[] colLength, String[][] values, boolean withRowNumbers){
-        return new Divider(numOfCoumns,colLength, values, withRowNumbers);
+    public static Divider create(int numOfCoumns, int[] colLength, String[][] values, boolean withRowNumbers) {
+        return new Divider(numOfCoumns, colLength, values, withRowNumbers);
     }
+
     public Divider(int numOfCoumns, int[] colLength, String[][] values, boolean withRowNumbers) {
         this.numOfCoumns = numOfCoumns;
         this.colLength = colLength;
@@ -28,6 +29,7 @@ public class Divider {
         }
         return divider;
     }
+
     public void makeDividerLength(String[] divider) {
 
         for (int div = 0; div < divider.length; div++) {
@@ -53,6 +55,7 @@ public class Divider {
         }
         return numPart;
     }
+
     public String makeFullStringfromDivider() {
         StringBuilder sbdiv = new StringBuilder();
         if (withRowNumbers) {

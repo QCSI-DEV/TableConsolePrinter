@@ -31,7 +31,7 @@ public final class TablePrinterTests {
                         "| 2 | Alexandr | 7   | Great Britain |\n" +
                         "+---+----------+-----+---------------+";
 
-        DBforTest db = new DBforTest(10,1000);
+        DBforTest db = new DBforTest(100,100);
         db.createHeaders();
         db.createValues();
 

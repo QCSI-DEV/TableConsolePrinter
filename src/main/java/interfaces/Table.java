@@ -19,9 +19,10 @@ public class Table {
         return null;
     }
 
-    public void makeStringLength(String []headers) {
+    public void makeStringLength(String[] headers) {
     }
-    public void makeStringLength(String [][]values) {
+
+    public void makeStringLength(String[][] values) {
     }
 
     public String[] getHeaders() {

@@ -84,7 +84,7 @@ public final class TableImpl extends Table {
         if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 
-        Divider divider = Divider.create(numOfCoumns,colLength, values, withRowNumbers);
+        Divider divider = Divider.create(numOfCoumns, colLength, values, withRowNumbers);
 
         divider.makeDividerLength(divider.makeDivider());
         String dividerString = divider.makeFullStringfromDivider();
@@ -109,15 +109,16 @@ public final class TableImpl extends Table {
         for (int i = 0; i < values.length; i++) {
             String[] value = values[i];
             if (withRowNumbers) {
-                String rowNumdersLength = String.valueOf(values.length);
+                int rowNumdersLength = String.valueOf(values.length).length();
                 sb.append("| ");
-                sb.append(i+1);
-                //TODO remove extra whitespace
-                if (String.valueOf(i).length()<rowNumdersLength.length()) {
-                    for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                sb.append(i + 1);
+                int size = rowNumdersLength - String.valueOf(i + 1).length();
+                if (String.valueOf(i).length() < rowNumdersLength) {
+                    for (int i1 = 0; i1 < size; i1++) {
                         sb.append(" ");
                     }
                 }
+                sb.append(" ");
             }
             for (int valcol = 0; valcol < numOfCoumns; valcol++) {
                 sb.append("|").append(value[valcol]);
@@ -144,7 +145,6 @@ public final class TableImpl extends Table {
     }
 
 
-
     public void makeStringLength(String[][] values) {
         for (int rows = 0; rows < values.length; rows++) {
             for (int col = 0; col < numOfCoumns; col++) {
@@ -160,7 +160,6 @@ public final class TableImpl extends Table {
             }
         }
     }
-
 
 
     @Override
