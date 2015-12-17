@@ -81,17 +81,56 @@ public final class TableImpl extends Table {
 
     @Override
     public String printTable() {
+        StringBuilder sb = new StringBuilder();
+        Divider divider;
+        String dividerString;
+
         if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 
-        Divider divider = Divider.create(numOfCoumns, colLength, values, withRowNumbers);
-
+        divider = Divider.create(numOfCoumns, colLength, values, withRowNumbers);
         divider.makeDividerLength(divider.makeDivider());
-        String dividerString = divider.makeFullStringfromDivider();
+        dividerString = divider.makeFullStringfromDivider();
 
-        StringBuilder sb = new StringBuilder();
+        addDividerString(dividerString, sb);
+        addHeader(dividerString, sb);
+        for (int i = 0; i < values.length; i++) {
+            String[] value = values[i];
+            addRowNumbers(sb, i);
+            addValueRows(sb, value);
+        }
+        addDividerString(dividerString, sb);
 
+        return sb.toString();
+    }
+
+    private void addDividerString(String dividerString, StringBuilder sb) {
         sb.append(dividerString).append("+").append("\n");
+    }
+
+    private void addValueRows(StringBuilder sb, String[] value) {
+        for (int valcol = 0; valcol < numOfCoumns; valcol++) {
+            sb.append("|").append(value[valcol]);
+        }
+        sb.append("|").append("\n");
+    }
+
+    private void addRowNumbers(StringBuilder sb, int i) {
+        if (withRowNumbers) {
+            int rowNumdersLength = String.valueOf(values.length).length();
+            sb.append("| ");
+            sb.append(i + 1);
+            int size = rowNumdersLength - String.valueOf(i + 1).length();
+            if (String.valueOf(i).length() < rowNumdersLength) {
+                for (int i1 = 0; i1 < size; i1++) {
+                    sb.append(" ");
+                }
+            }
+            sb.append(" ");
+        }
+    }
+
+    private void addHeader(String dividerString, StringBuilder sb) {
         if (withHeaders) {
             if (withRowNumbers) {
                 String rowNumdersLength = String.valueOf(values.length);
@@ -104,29 +143,8 @@ public final class TableImpl extends Table {
                 sb.append("|").append(header);
             }
             sb.append("|").append("\n");
-            sb.append(dividerString).append("+").append("\n");
+            addDividerString(dividerString, sb);
         }
-        for (int i = 0; i < values.length; i++) {
-            String[] value = values[i];
-            if (withRowNumbers) {
-                int rowNumdersLength = String.valueOf(values.length).length();
-                sb.append("| ");
-                sb.append(i + 1);
-                int size = rowNumdersLength - String.valueOf(i + 1).length();
-                if (String.valueOf(i).length() < rowNumdersLength) {
-                    for (int i1 = 0; i1 < size; i1++) {
-                        sb.append(" ");
-                    }
-                }
-                sb.append(" ");
-            }
-            for (int valcol = 0; valcol < numOfCoumns; valcol++) {
-                sb.append("|").append(value[valcol]);
-            }
-            sb.append("|").append("\n");
-        }
-        sb.append(dividerString).append("+");
-        return sb.toString();
     }
 
     @Override

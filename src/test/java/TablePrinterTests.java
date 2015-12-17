@@ -23,6 +23,7 @@ public final class TablePrinterTests {
         Assert.assertEquals(realString, expectedString);
     }
     public void makeFileExpectedString(String s) throws IOException {
+       
         File outFile = new File ("expectedString");
         FileWriter fWriter = new FileWriter (outFile);
         PrintWriter pWriter = new PrintWriter (fWriter);
