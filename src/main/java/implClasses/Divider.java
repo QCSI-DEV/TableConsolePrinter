@@ -1,8 +1,6 @@
 package implClasses;
 
-/**
- * Created by n.chernonog on 12/10/2015.
- */
+
 public class Divider {
 
     int numOfCoumns;
@@ -43,7 +41,6 @@ public class Divider {
             } else sbLen.append(divider[div]).append("-");
             divider[div] = sbLen.toString();
         }
-
     }
 
     public StringBuilder makeNumPartForDivider() {

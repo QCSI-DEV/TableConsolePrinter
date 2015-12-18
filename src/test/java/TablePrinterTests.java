@@ -19,7 +19,7 @@ public final class TablePrinterTests {
 
         realString = table.printTable();
         print(realString);
-        makeFileExpectedString(table.printTable());
+        makeFileExpectedString(realString);
         Assert.assertEquals(realString, expectedString);
     }
     public void makeFileExpectedString(String s) throws IOException {

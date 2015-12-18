@@ -133,9 +133,9 @@ public final class TableImpl extends Table {
     private void addHeader(String dividerString, StringBuilder sb) {
         if (withHeaders) {
             if (withRowNumbers) {
-                String rowNumdersLength = String.valueOf(values.length);
+                String rowNumbersLength = String.valueOf(values.length);
                 sb.append("| #");
-                for (int i1 = 0; i1 < rowNumdersLength.length(); i1++) {
+                for (int i1 = 0; i1 < rowNumbersLength.length(); i1++) {
                     sb.append(" ");
                 }
             }
