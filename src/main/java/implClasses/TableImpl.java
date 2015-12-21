@@ -107,14 +107,14 @@ public final class TableImpl extends Table {
     }
 
     private void addDividerString(String dividerString, StringBuilder sb) {
-        sb.append(dividerString).append("+").append("\n");
+        sb.append(dividerString).append("+").append("\r\n");
     }
 
     private void addValueRows(StringBuilder sb, String[] value) {
         for (int valcol = 0; valcol < numOfCoumns; valcol++) {
             sb.append("|").append(value[valcol]);
         }
-        sb.append("|").append("\n");
+        sb.append("|").append("\r\n");
     }
 
     private void addRowNumbers(StringBuilder sb, int i) {
@@ -144,7 +144,7 @@ public final class TableImpl extends Table {
             for (String header : headers) {
                 sb.append("|").append(header);
             }
-            sb.append("|").append("\n");
+            sb.append("|").append("\r\n");
             addDividerString(dividerString, sb);
         }
     }

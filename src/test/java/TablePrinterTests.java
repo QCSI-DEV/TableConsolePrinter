@@ -8,13 +8,13 @@ import java.io.*;
 
 public final class TablePrinterTests {
 
-    public void testCase(String expected, TableImpl table) throws IOException {
+    public void doAssert(String expected, TableImpl table) throws IOException {
         Assert.assertEquals(table.printTable(), expected);
     }
 
     public String readFile(String fileName) {
         try {
-            return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName));
+            return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName),"UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -26,7 +26,7 @@ public final class TablePrinterTests {
 
         DBForTest db = new DBForTest(100,100);
         TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), true);
-        testCase(expectedString, table);
+        doAssert(expectedString, table);
     }
 
     @Test
@@ -35,7 +35,7 @@ public final class TablePrinterTests {
 
         DBForTest db = new DBForTest(100,100);
         TableImpl table = TableImpl.create(false, db.createValues(), true);
-        testCase(expectedString, table);
+        doAssert(expectedString, table);
     }
 
     @Test
@@ -44,7 +44,7 @@ public final class TablePrinterTests {
 
         DBForTest db = new DBForTest(100,100);
         TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), false);
-        testCase(expectedString, table);
+        doAssert(expectedString, table);
     }
 
     @Test
@@ -53,7 +53,7 @@ public final class TablePrinterTests {
 
         DBForTest db = new DBForTest(100,100);
         TableImpl table = TableImpl.create(false, db.createValues(), false);
-        testCase(expectedString, table);
+        doAssert(expectedString, table);
     }
 }
 

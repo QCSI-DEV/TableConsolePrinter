@@ -1,29 +1,28 @@
 package implClasses;
 
-import java.io.*;
+import org.testng.annotations.Optional;
 
-/**
- * Created by ������� on 13.12.2015.
- */
-public class DBforTest {
+public class DBForTest {
+
     private String[] headers;
     private String[][] values;
     private int headersSize;
     private int valuesSize;
 
-
-    public DBforTest(int headersSize, int valuesSize) {
+    public DBForTest(int  headersSize, int valuesSize) {
         this.headersSize = headersSize;
         this.valuesSize = valuesSize;
     }
 
     public String[] createHeaders() {
         headers = new String[headersSize];
+        fillHeaders();
         return headers;
     }
 
     public String[][] createValues() {
         values = new String[valuesSize][headersSize];
+        fillValues();
         return values;
     }
 
