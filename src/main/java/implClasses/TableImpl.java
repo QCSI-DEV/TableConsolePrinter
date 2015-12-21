@@ -85,6 +85,8 @@ public final class TableImpl extends Table {
         Divider divider;
         String dividerString;
 
+        colLength = columnLength();
+
         if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 

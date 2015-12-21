@@ -1,130 +1,59 @@
-import implClasses.DBforTest;
+import implClasses.DBForTest;
 import implClasses.TableImpl;
+import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.*;
-import java.util.Arrays;
-
 
 public final class TablePrinterTests {
-    public void print(String text) {
-        System.out.println(text);
+
+    public void testCase(String expected, TableImpl table) throws IOException {
+        Assert.assertEquals(table.printTable(), expected);
     }
 
-    public void testCase(String expectedString, TableImpl table) throws IOException {
-        String realString;
-
-        print(Arrays.toString(table.columnLength()));
-
-        realString = table.printTable();
-        print(realString);
-        makeFileExpectedString(realString);
-        Assert.assertEquals(realString, expectedString);
-    }
-    public void makeFileExpectedString(String s) throws IOException {
-       
-        File outFile = new File ("expectedString");
-        FileWriter fWriter = new FileWriter (outFile);
-        PrintWriter pWriter = new PrintWriter (fWriter);
-
+    public String readFile(String fileName) {
         try {
-            pWriter.write(s);
-        }finally {
-            if (pWriter != null) {
-                pWriter.close();
-            }
+            return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    public String readFile() {
-        StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("expectedString"));
-            int c;
-            while ((c = reader.read()) != -1) {
-                sb.append((char) c);
-            }
-        } catch (IOException ex) {
-
-            System.out.println(ex.getMessage());
-        }
-        return sb.toString();
     }
 
     @Test
     public void tableWithHeadersAndRowNumbers() throws IOException {
+        String expectedString = readFile("with_all_file.txt");
 
-        String expectedString = readFile();
-
-
-        DBforTest db = new DBforTest(100,100);
-        db.createHeaders();
-        db.createValues();
-
-        String[] headersTest = db.fillHeaders();
-        String[][] valuesTest = db.fillValues();
-
-        print("tableWithHeadersAndRowNumbers");
-        TableImpl table = TableImpl.create(headersTest, valuesTest, true);
-
+        DBForTest db = new DBForTest(100,100);
+        TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), true);
         testCase(expectedString, table);
-
     }
 
     @Test
     public void tableWithoutHeadersWithRowNumbers() throws IOException {
-        String expectedString =
+        String expectedString = readFile("without_headers.txt");
 
-                        "+---+----------+----+---------------+\n" +
-                        "| 1 | Ann      | 24 | Ukraine       |\n" +
-                        "| 2 | Alexandr | 7  | Great Britain |\n" +
-                        "+---+----------+----+---------------+";
+        DBForTest db = new DBForTest(100,100);
+        TableImpl table = TableImpl.create(false, db.createValues(), true);
+        testCase(expectedString, table);
+    }
 
-        String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
+    @Test
+    public void tableWithHeadersWithoutRowNumbers() throws IOException {
+        String expectedString = readFile("without_rowNumbers.txt");
 
-
-        print("tableWithoutHeadersWithRowNumbers");
-
-        TableImpl table = TableImpl.create(false, valuesTest, true);
+        DBForTest db = new DBForTest(100,100);
+        TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), false);
         testCase(expectedString, table);
     }
 
     @Test
     public void tableWithoutHeadersWithoutRowNumbers() throws IOException {
-        String expectedString =
+        String expectedString = readFile("without_all.txt");
 
-                        "+----------+----+---------------+\n" +
-                        "| Ann      | 24 | Ukraine       |\n" +
-                        "| Alexandr | 7  | Great Britain |\n" +
-                        "+----------+----+---------------+";
-
-        String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
-
-        print("tableWithoutHeadersWithoutRowNumbers");
-        TableImpl table = TableImpl.create(false, valuesTest, false);
+        DBForTest db = new DBForTest(100,100);
+        TableImpl table = TableImpl.create(false, db.createValues(), false);
         testCase(expectedString, table);
-
-    }
-
-    @Test
-    public void tableWithHeadersWithoutRowNumbers() throws IOException {
-        String expectedString =
-                        "+----------+-----+---------------+\n" +
-                        "| Name     | Age | Address       |\n" +
-                        "+----------+-----+---------------+\n" +
-                        "| Ann      | 24  | Ukraine       |\n" +
-                        "| Alexandr | 7   | Great Britain |\n" +
-                        "+----------+-----+---------------+";
-
-
-        String[] headersTest = {"Name", "Age", "Address"};
-        String[][] valuesTest = {{"Ann", "24", "Ukraine"}, {"Alexandr", "7", "Great Britain"}};
-
-        print("tableWithHeadersWithoutRowNumbers");
-        TableImpl table = TableImpl.create(headersTest, valuesTest, false);
-        testCase(expectedString, table);
-
     }
 }
 
