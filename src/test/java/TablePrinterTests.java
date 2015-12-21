@@ -14,7 +14,8 @@ public final class TablePrinterTests {
 
     public String readFile(String fileName) {
         try {
-            return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName),"UTF-8");
+            return FileUtils.readFileToString(new File(getClass().getClassLoader().getResource(fileName).getPath()), "UTF-8");
+            //return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName),"UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
