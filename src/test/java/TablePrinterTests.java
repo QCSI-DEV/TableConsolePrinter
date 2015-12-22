@@ -15,7 +15,6 @@ public final class TablePrinterTests {
     public String readFile(String fileName) {
         try {
             return FileUtils.readFileToString(new File(getClass().getClassLoader().getResource(fileName).getPath()), "UTF-8");
-            //return FileUtils.readFileToString(new File("D:\\Education\\TableConsolePrinter\\src\\test\\resources\\"+fileName),"UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -25,7 +24,7 @@ public final class TablePrinterTests {
     public void tableWithHeadersAndRowNumbers() throws IOException {
         String expectedString = readFile("with_all_file.txt");
 
-        DBForTest db = new DBForTest(100,100);
+        DBForTest db = new DBForTest(100, 100);
         TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), true);
         doAssert(expectedString, table);
     }
@@ -34,7 +33,7 @@ public final class TablePrinterTests {
     public void tableWithoutHeadersWithRowNumbers() throws IOException {
         String expectedString = readFile("without_headers.txt");
 
-        DBForTest db = new DBForTest(100,100);
+        DBForTest db = new DBForTest(100, 100);
         TableImpl table = TableImpl.create(false, db.createValues(), true);
         doAssert(expectedString, table);
     }
@@ -43,7 +42,7 @@ public final class TablePrinterTests {
     public void tableWithHeadersWithoutRowNumbers() throws IOException {
         String expectedString = readFile("without_rowNumbers.txt");
 
-        DBForTest db = new DBForTest(100,100);
+        DBForTest db = new DBForTest(100, 100);
         TableImpl table = TableImpl.create(db.createHeaders(), db.createValues(), false);
         doAssert(expectedString, table);
     }
@@ -52,7 +51,7 @@ public final class TablePrinterTests {
     public void tableWithoutHeadersWithoutRowNumbers() throws IOException {
         String expectedString = readFile("without_all.txt");
 
-        DBForTest db = new DBForTest(100,100);
+        DBForTest db = new DBForTest(100, 100);
         TableImpl table = TableImpl.create(false, db.createValues(), false);
         doAssert(expectedString, table);
     }
