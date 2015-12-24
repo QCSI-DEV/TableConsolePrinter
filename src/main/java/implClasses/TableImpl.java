@@ -14,7 +14,7 @@ public final class TableImpl extends Table {
     private boolean withHeaders = true;
 
     int[] colLength;
-    int numOfCoumns;
+    int numOfColumns;
 
 
     public static TableImpl create(String[] headers, String[][] values, boolean withRowNumbers) {
@@ -41,7 +41,7 @@ public final class TableImpl extends Table {
 
     @Override
     public boolean isHeadersColMatchValueCol() {
-        int columns = numOfCoumns;
+        int columns = numOfColumns;
         for (String[] inner : values) {
             if (columns != inner.length) {
                 System.out.println("Value column is absent");
@@ -52,15 +52,15 @@ public final class TableImpl extends Table {
     }
 
     public int[] columnLength() {
-        colLength = new int[numOfCoumns];
+        colLength = new int[numOfColumns];
         if (withHeaders) {
-            for (int i = 0; i < numOfCoumns; i++) {
+            for (int i = 0; i < numOfColumns; i++) {
                 if (colLength[i] < headers[i].length()) {
                     colLength[i] = headers[i].length();
                 }
             }
         }
-        for (int j = 0; j < numOfCoumns; j++) {
+        for (int j = 0; j < numOfColumns; j++) {
             for (String[] value : values) {
                 if (colLength[j] < value[j].length()) {
                     colLength[j] = value[j].length();
@@ -72,10 +72,10 @@ public final class TableImpl extends Table {
 
     public void getNumberOfColumns() {
         if (withHeaders)
-            numOfCoumns = headers.length;
+            numOfColumns = headers.length;
         else
             for (String[] inner : values) {
-                numOfCoumns = inner.length;
+                numOfColumns = inner.length;
             }
     }
 
@@ -90,9 +90,9 @@ public final class TableImpl extends Table {
         if (withHeaders) makeStringLength(headers);
         makeStringLength(values);
 
-        divider = Divider.create(numOfCoumns, colLength, values, withRowNumbers);
+        divider = Divider.create(numOfColumns, colLength, values, withRowNumbers);
         divider.makeDividerLength(divider.makeDivider());
-        dividerString = divider.makeFullStringfromDivider();
+        dividerString = divider.makeFullStringFromDivider();
 
         addDividerString(dividerString, sb);
         addHeader(dividerString, sb);
@@ -111,19 +111,19 @@ public final class TableImpl extends Table {
     }
 
     private void addValueRows(StringBuilder sb, String[] value) {
-        for (int valcol = 0; valcol < numOfCoumns; valcol++) {
-            sb.append("|").append(value[valcol]);
+        for (int columnOfValue = 0; columnOfValue < numOfColumns; columnOfValue++) {
+            sb.append("|").append(value[columnOfValue]);
         }
         sb.append("|").append("\r\n");
     }
 
     private void addRowNumbers(StringBuilder sb, int i) {
         if (withRowNumbers) {
-            int rowNumdersLength = String.valueOf(values.length).length();
+            int rowNumbersLength = String.valueOf(values.length).length();
             sb.append("| ");
             sb.append(i + 1);
-            int size = rowNumdersLength - String.valueOf(i + 1).length();
-            if (String.valueOf(i).length() < rowNumdersLength) {
+            int size = rowNumbersLength - String.valueOf(i + 1).length();
+            if (String.valueOf(i).length() < rowNumbersLength) {
                 for (int i1 = 0; i1 < size; i1++) {
                     sb.append(" ");
                 }
@@ -167,7 +167,7 @@ public final class TableImpl extends Table {
 
     public void makeStringLength(String[][] values) {
         for (int rows = 0; rows < values.length; rows++) {
-            for (int col = 0; col < numOfCoumns; col++) {
+            for (int col = 0; col < numOfColumns; col++) {
                 StringBuilder sbLen = new StringBuilder(" ");
                 int dif = colLength[col] - values[rows][col].length();
                 if (dif > 0) {
