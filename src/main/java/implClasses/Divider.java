@@ -4,61 +4,62 @@ package implClasses;
 public class Divider {
 
     private final int numOfColumns;
-    private final int[] colLength;
+    private final int[] numberOfCharsInColumn;
     private final String[][] values;
     private final boolean withRowNumbers;
+    private String[] dividerBase;
 
-    public static Divider create(int numOfColumns, int[] colLength, String[][] values, boolean withRowNumbers) {
-        return new Divider(numOfColumns, colLength, values, withRowNumbers);
+    public static Divider create(int numOfColumns, int[] numberOfCharsInColumn, String[][] values, boolean withRowNumbers) {
+        return new Divider(numOfColumns, numberOfCharsInColumn, values, withRowNumbers);
     }
 
-    public Divider(int numOfColumns, int[] colLength, String[][] values, boolean withRowNumbers) {
+    public Divider(int numOfColumns, int[] numberOfCharsInColumn, String[][] values, boolean withRowNumbers) {
         this.numOfColumns = numOfColumns;
-        this.colLength = colLength;
+        this.numberOfCharsInColumn = numberOfCharsInColumn;
         this.values = values;
         this.withRowNumbers = withRowNumbers;
     }
 
     public String[] makeDivider() {
-        String[] divider = new String[numOfColumns];
+        dividerBase = new String[numOfColumns];
         for (int i = 0; i < numOfColumns; i++) {
-            divider[i] = "+-";
+            dividerBase[i] = "+-";
         }
-        makeDividerLength(divider);
-        return divider;
+        makeFullDivider();
+        return dividerBase;
     }
 
-    public String[] makeDividerLength(String[] divider) {
+    public void makeFullDivider() {
 
-        for (int div = 0; div < divider.length; div++) {
-            StringBuilder dividerLength = new StringBuilder();
-            int dif = colLength[div] - divider[div].length();
-            if (dif >= 0) {
-                dividerLength.append(divider[div]);
-                for (int d = 0; d < (dif + 3); d++) {
-                    dividerLength.append("-");
+        for (int div = 0; div < dividerBase.length; div++) {
+            StringBuilder fullDivider = new StringBuilder();
+            int difference = numberOfCharsInColumn[div] - dividerBase[div].length();
+            if (difference >= 0) {
+                fullDivider.append(dividerBase[div]);
+                for (int numOfDashes = 0; numOfDashes < (difference + 3); numOfDashes++) {
+                    fullDivider.append("-");
                 }
-            } else dividerLength.append(divider[div]).append("-");
-            divider[div] = dividerLength.toString();
+            } else fullDivider.append(dividerBase[div]).append("-");
+            dividerBase[div] = fullDivider.toString();
         }
-        return divider;
+
     }
 
     public StringBuilder makeNumPartForDivider() {
-        StringBuilder numPart = new StringBuilder("+");
-        String rowNumbersLength = String.valueOf(values.length);
-        for (int i1 = 0; i1 < rowNumbersLength.length() + 2; i1++) {
-            numPart.append("-");
+        StringBuilder numPartDivider = new StringBuilder("+");
+        int rowNumbersLength = String.valueOf(values.length).length();
+        for (int numOfDashes = 0; numOfDashes < rowNumbersLength + 2; numOfDashes++) {
+            numPartDivider.append("-");
         }
-        return numPart;
+        return numPartDivider;
     }
 
     public String makeFullStringFromDivider() {
-        StringBuilder fullDivider = new StringBuilder();
+        StringBuilder fullDividerString = new StringBuilder();
         if (withRowNumbers) {
-            fullDivider = makeNumPartForDivider();
+            fullDividerString = makeNumPartForDivider();
         }
-        return fullDivider.append(makeStringDivider()).toString();
+        return fullDividerString.append(makeStringDivider()).toString();
     }
 
     public StringBuilder makeStringDivider() {

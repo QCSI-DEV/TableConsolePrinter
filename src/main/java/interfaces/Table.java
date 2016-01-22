@@ -1,28 +1,26 @@
 package interfaces;
 
 
-public class Table {
+public abstract class Table {
     private String[] headers;
     private String[][] values;
-    private int colLength[];
+    private int numOfCharsInColumn[];
 
     public boolean isHeadersColMatchValueCol() {
         return false;
     }
 
-    public int[] columnLength() {
-        return null;
-    }
 
-    public String printTable() {
+
+    public String makeTableAsString() {
 
         return null;
     }
 
-    public void makeStringLength(String[] headers) {
+    public void makeHeadersAsString(String[] headers) {
     }
 
-    public void makeStringLength(String[][] values) {
+    public void makeHeadersAsString(String[][] values) {
     }
 
     public String[] getHeaders() {
@@ -41,11 +39,15 @@ public class Table {
         this.values = values;
     }
 
-    public int[] getColLength() {
-        return colLength;
+    public int[] getNumberOfCharsInColumn() {
+        return numOfCharsInColumn;
     }
 
-    public void setColLength(int[] colLength) {
-        this.colLength = colLength;
+    public void setNumberOfCharsInColumn(int[] colLength) {
+        this.numOfCharsInColumn = colLength;
     }
+
+    public abstract int[] getNumOfCharsInColumn();
+
+    public abstract void setNumOfCharsInColumn(int[] numOfCharsInColumn);
 }

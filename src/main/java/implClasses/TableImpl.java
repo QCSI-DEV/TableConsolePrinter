@@ -13,8 +13,9 @@ public final class TableImpl extends Table {
     private boolean withRowNumbers;
     private boolean withHeaders = true;
 
-    int[] colLength;
-    int numOfColumns;
+
+    private int numOfColumns;
+    private int[] numOfCharsInColumn;
 
 
     public static TableImpl create(String[] headers, String[][] values, boolean withRowNumbers) {
@@ -39,6 +40,7 @@ public final class TableImpl extends Table {
         getNumberOfColumns();
     }
 
+    //TODO: use this verification
     @Override
     public boolean isHeadersColMatchValueCol() {
         int columns = numOfColumns;
@@ -51,23 +53,24 @@ public final class TableImpl extends Table {
         return true;
     }
 
-    public int[] columnLength() {
-        colLength = new int[numOfColumns];
+    public int[] getColumnWidth() {
+        int[] possibleNumOfChars = new int[numOfColumns];
+        int column;
         if (withHeaders) {
-            for (int i = 0; i < numOfColumns; i++) {
-                if (colLength[i] < headers[i].length()) {
-                    colLength[i] = headers[i].length();
+            for (column = 0; column < numOfColumns; column++) {
+                if (possibleNumOfChars[column] < headers[column].length()) {
+                    possibleNumOfChars[column] = headers[column].length();
                 }
             }
         }
-        for (int j = 0; j < numOfColumns; j++) {
+        for (column = 0; column < numOfColumns; column++) {
             for (String[] value : values) {
-                if (colLength[j] < value[j].length()) {
-                    colLength[j] = value[j].length();
+                if (possibleNumOfChars[column] < value[column].length()) {
+                    possibleNumOfChars[column] = value[column].length();
                 }
             }
         }
-        return colLength;
+        return possibleNumOfChars;
     }
 
     public void getNumberOfColumns() {
@@ -80,37 +83,37 @@ public final class TableImpl extends Table {
     }
 
     @Override
-    public String printTable() {
-        StringBuilder sb = new StringBuilder();
+    public String makeTableAsString() {
+        StringBuilder tableAsString = new StringBuilder();
         Divider divider;
         String dividerString;
 
-        colLength = columnLength();
+        numOfCharsInColumn = getColumnWidth();
 
-        if (withHeaders) makeStringLength(headers);
-        makeStringLength(values);
+        if (withHeaders) makeHeadersAsString(headers);
+        makeValuesAsString(values);
 
-        divider = Divider.create(numOfColumns, colLength, values, withRowNumbers);
-        divider.makeDividerLength(divider.makeDivider());
+        divider = Divider.create(numOfColumns, numOfCharsInColumn, values, withRowNumbers);
         dividerString = divider.makeFullStringFromDivider();
 
-        addDividerString(dividerString, sb);
-        addHeader(dividerString, sb);
-        for (int i = 0; i < values.length; i++) {
-            String[] value = values[i];
-            addRowNumbers(sb, i);
-            addValueRows(sb, value);
+        addDividerString(dividerString, tableAsString);
+        if (withHeaders) addHeader(dividerString, tableAsString);
+        for (int rows = 0; rows < values.length; rows++) {
+            String[] value = values[rows];
+            //TODO: continue refactoring
+            addRowNumbers(tableAsString, rows);
+            addValueRows(value,tableAsString);
         }
-        addDividerString(dividerString, sb);
+        addDividerString(dividerString, tableAsString);
 
-        return sb.toString();
+        return tableAsString.toString();
     }
 
-    private void addDividerString(String dividerString, StringBuilder sb) {
-        sb.append(dividerString).append("+").append("\r\n");
+    private void addDividerString(String dividerString, StringBuilder withEndingDivider) {
+        withEndingDivider.append(dividerString).append("+").append("\r\n");
     }
 
-    private void addValueRows(StringBuilder sb, String[] value) {
+    private void addValueRows( String[] value, StringBuilder sb) {
         for (int columnOfValue = 0; columnOfValue < numOfColumns; columnOfValue++) {
             sb.append("|").append(value[columnOfValue]);
         }
@@ -132,51 +135,49 @@ public final class TableImpl extends Table {
         }
     }
 
-    private void addHeader(String dividerString, StringBuilder sb) {
-        if (withHeaders) {
-            if (withRowNumbers) {
-                String rowNumbersLength = String.valueOf(values.length);
-                sb.append("| #");
-                for (int i1 = 0; i1 < rowNumbersLength.length(); i1++) {
-                    sb.append(" ");
-                }
+    private void addHeader(String dividerString, StringBuilder headersWithDivider) {
+        if (withRowNumbers) {
+            int rowNumbersColumnWidth = String.valueOf(values.length).length();
+            headersWithDivider.append("| #");
+            for (int charNum = 0; charNum < rowNumbersColumnWidth; charNum++) {
+                headersWithDivider.append(" ");
             }
-            for (String header : headers) {
-                sb.append("|").append(header);
-            }
-            sb.append("|").append("\r\n");
-            addDividerString(dividerString, sb);
         }
+        for (String header : headers) {
+            headersWithDivider.append("|").append(header);
+        }
+        headersWithDivider.append("|").append("\r\n");
+        addDividerString(dividerString, headersWithDivider);
     }
 
     @Override
-    public void makeStringLength(String[] headers) {
+    public void makeHeadersAsString(String[] headers) {
         for (int i = 0; i < headers.length; i++) {
-            StringBuilder sbLen = new StringBuilder(" ");
-            int dif = colLength[i] - headers[i].length();
+            StringBuilder fullCellWidth = new StringBuilder(" ");
+            int dif = numOfCharsInColumn[i] - headers[i].length();
             if (dif > 0) {
-                sbLen.append(headers[i]);
+                fullCellWidth.append(headers[i]);
                 for (int d = 0; d < dif + 1; d++) {
-                    sbLen.append(" ");
+                    fullCellWidth.append(" ");
                 }
-            } else sbLen.append(headers[i]).append(" ");
-            headers[i] = sbLen.toString();
+            } else fullCellWidth.append(headers[i]).append(" ");
+            headers[i] = fullCellWidth.toString();
         }
     }
 
 
-    public void makeStringLength(String[][] values) {
+    public void makeValuesAsString(String[][] values) {
         for (int rows = 0; rows < values.length; rows++) {
             for (int col = 0; col < numOfColumns; col++) {
-                StringBuilder sbLen = new StringBuilder(" ");
-                int dif = colLength[col] - values[rows][col].length();
-                if (dif > 0) {
-                    sbLen.append(values[rows][col]);
-                    for (int d = 0; d < dif + 1; d++) {
-                        sbLen.append(" ");
+                StringBuilder fullCellWidth = new StringBuilder(" ");
+                int difference = numOfCharsInColumn[col] - values[rows][col].length();
+                if (difference > 0) {
+                    fullCellWidth.append(values[rows][col]);
+                    for (int d = 0; d < difference + 1; d++) {
+                        fullCellWidth.append(" ");
                     }
-                } else sbLen.append(values[rows][col]).append(" ");
-                values[rows][col] = sbLen.toString();
+                } else fullCellWidth.append(values[rows][col]).append(" ");
+                values[rows][col] = fullCellWidth.toString();
             }
         }
     }
@@ -203,13 +204,13 @@ public final class TableImpl extends Table {
     }
 
     @Override
-    public int[] getColLength() {
-        return colLength;
+    public int[] getNumOfCharsInColumn() {
+        return numOfCharsInColumn;
     }
 
     @Override
-    public void setColLength(int[] colLength) {
-        this.colLength = colLength;
+    public void setNumOfCharsInColumn(int[] colLength) {
+        this.numOfCharsInColumn = colLength;
     }
 
     @Override
@@ -217,7 +218,7 @@ public final class TableImpl extends Table {
         return "TableImpl{" +
                 "headers=" + Arrays.toString(headers) +
                 ", values=" + Arrays.toString(values) +
-                ", colLength=" + Arrays.toString(colLength) +
+                ", colLength=" + Arrays.toString(numOfCharsInColumn) +
                 '}';
     }
 

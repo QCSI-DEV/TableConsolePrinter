@@ -9,7 +9,7 @@ import java.io.*;
 public final class TablePrinterTests {
 
     public void doAssert(String expected, TableImpl table) throws IOException {
-        Assert.assertEquals(table.printTable(), expected);
+        Assert.assertEquals(table.makeTableAsString(), expected);
     }
 
     public String readFile(String fileName) {
