@@ -98,11 +98,11 @@ public final class TableImpl extends Table {
 
         addDividerString(dividerString, tableAsString);
         if (withHeaders) addHeader(dividerString, tableAsString);
-        for (int rows = 0; rows < values.length; rows++) {
-            String[] value = values[rows];
-            //TODO: continue refactoring
-            addRowNumbers(tableAsString, rows);
-            addValueRows(value,tableAsString);
+
+        for (int eachRow = 0; eachRow < values.length; eachRow++) {
+            String[] valuesByRows = values[eachRow];
+            addRowNumbers(tableAsString, eachRow);
+            addValueByRows(valuesByRows,tableAsString);
         }
         addDividerString(dividerString, tableAsString);
 
@@ -113,25 +113,25 @@ public final class TableImpl extends Table {
         withEndingDivider.append(dividerString).append("+").append("\r\n");
     }
 
-    private void addValueRows( String[] value, StringBuilder sb) {
+    private void addValueByRows(String[] valuesByRows, StringBuilder sb) {
         for (int columnOfValue = 0; columnOfValue < numOfColumns; columnOfValue++) {
-            sb.append("|").append(value[columnOfValue]);
+            sb.append("|").append(valuesByRows[columnOfValue]);
         }
         sb.append("|").append("\r\n");
     }
 
-    private void addRowNumbers(StringBuilder sb, int i) {
+    private void addRowNumbers(StringBuilder rowNumber, int eachRow) {
         if (withRowNumbers) {
             int rowNumbersLength = String.valueOf(values.length).length();
-            sb.append("| ");
-            sb.append(i + 1);
-            int size = rowNumbersLength - String.valueOf(i + 1).length();
-            if (String.valueOf(i).length() < rowNumbersLength) {
+            rowNumber.append("| ");
+            rowNumber.append(eachRow + 1);
+            int size = rowNumbersLength - String.valueOf(eachRow + 1).length();
+            if (String.valueOf(eachRow).length() < rowNumbersLength) {
                 for (int i1 = 0; i1 < size; i1++) {
-                    sb.append(" ");
+                    rowNumber.append(" ");
                 }
             }
-            sb.append(" ");
+            rowNumber.append(" ");
         }
     }
 
